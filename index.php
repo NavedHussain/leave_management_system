@@ -24,7 +24,7 @@ $query = "SELECT l.*, e.name
 $leaveResult = mysqli_query($con, $query);
 ?>
 
-<div class="content pb-0">
+<!-- <div class="content pb-0">
    <div class="orders">
       <div class="row">
          <div class="col-xl-12">
@@ -32,8 +32,8 @@ $leaveResult = mysqli_query($con, $query);
                <div class="card-body">
                   <h4 class="box-title">Welcome Admin: <?php echo htmlspecialchars($_SESSION['user_name']); ?> </h4>
                   <p class="text-muted">All Employees Leave Applications</p>
-               </div>
-               <div class="card-body--">
+               </div> -->
+               <!-- <div class="card-body--">
                   <?php if(mysqli_num_rows($leaveResult) > 0) { ?>
                      <div class="table-stats order-table ov-h mb-4">
                         <table class="table">
@@ -63,7 +63,7 @@ $leaveResult = mysqli_query($con, $query);
                </div>
             </div>
          </div>
-      </div>
+      </div> -->
 
       <!-- Department Master Section -->
       <div class="row mt-4">

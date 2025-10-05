@@ -1,7 +1,7 @@
 <?php
 require('top.inc.php');
 
-// Agar login na ho to redirect
+// Redirect if not logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
@@ -9,10 +9,10 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId   = $_SESSION['user_id'];
 $userName = $_SESSION['user_name'];
+$userRole = $_SESSION['role'];
 
-// Employee ke leaves nikalna
-$query = "SELECT * FROM `leave` WHERE employee_id='$userId' ORDER BY leave_from DESC";
-$res = mysqli_query($con, $query);
+// Database connection
+require('includes/config.php');
 ?>
 
 <div class="content pb-0">
@@ -21,45 +21,70 @@ $res = mysqli_query($con, $query);
          <div class="col-xl-12">
             <div class="card">
                <div class="card-body">
-                  <h4 class="box-title">Welcome <?php echo htmlspecialchars($userName); ?> 👋</h4>
-                  <p class="text-muted">Here are your leave applications</p>
-               </div>
-               <div class="card-body--">
-                  <?php if(mysqli_num_rows($res) > 0) { ?>
-                     <div class="table-stats order-table ov-h">
-                        <table class="table">
-                           <thead>
-                              <tr>
-                                 <th>From</th>
-                                 <th>To</th>
-                                 <th>Description</th>
-                                 <th>Status</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <?php while($row = mysqli_fetch_assoc($res)) { ?>
+                  <h4 class="box-title">
+                     Welcome <?php echo htmlspecialchars($userName); ?> 👋
+                  </h4>
+
+                  <?php if($userRole == 1) { ?>
+                     <p class="text-muted">Here is the list of all employees in your organization.</p>
+
+                     <?php
+                        $query = "SELECT e.id, e.name, e.email, e.role, d.department AS department_name 
+                                  FROM employee e 
+                                  LEFT JOIN department d ON e.department_id = d.id
+                                  ORDER BY e.id ASC";
+                        $res = mysqli_query($con, $query);
+                     ?>
+
+                     <?php if(mysqli_num_rows($res) > 0) { ?>
+                        <div class="table-stats order-table ov-h mt-3">
+                           <table class="table">
+                              <thead>
                                  <tr>
-                                    <td><?php echo htmlspecialchars($row['leave_from']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['leave_to']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['leave_description']); ?></td>
-                                    <td>
-                                       <?php 
-                                          if($row['leave_status'] == 1) {
-                                             echo "<span class='badge badge-success'>Approved</span>";
-                                          } elseif($row['leave_status'] == 2) {
-                                             echo "<span class='badge badge-danger'>Rejected</span>";
-                                          } else {
-                                             echo "<span class='badge badge-warning'>Pending</span>";
-                                          }
-                                       ?>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                    <th>Role</th>
                                  </tr>
-                              <?php } ?>
-                           </tbody>
-                        </table>
-                     </div>
+                              </thead>
+                              <tbody>
+                                 <?php while($row = mysqli_fetch_assoc($res)) { ?>
+                                    <tr>
+                                       <td><?php echo $row['id']; ?></td>
+                                       <td><?php echo htmlspecialchars($row['name']); ?></td>
+                                       <td><?php echo htmlspecialchars($row['email']); ?></td>
+                                       <td><?php echo htmlspecialchars($row['department_name'] ?? 'Not Assigned'); ?></td>
+                                       <td>
+                                          <?php echo ($row['role'] == 1) ? "<span class='badge badge-success'>Admin</span>" : "<span class='badge badge-info'>Employee</span>"; ?>
+                                       </td>
+                                    </tr>
+                                 <?php } ?>
+                              </tbody>
+                           </table>
+                        </div>
+                     <?php } else { ?>
+                        <p class="alert alert-info mt-3">No employees found.</p>
+                     <?php } ?>
+
                   <?php } else { ?>
-                     <p class="alert alert-info">You haven’t applied for any leave yet.</p>
+                     <p class="text-muted">Here are your details:</p>
+
+                     <?php
+                        $query = "SELECT e.*, d.department AS department_name 
+                                  FROM employee e 
+                                  LEFT JOIN department d ON e.department_id = d.id 
+                                  WHERE e.id = '$userId'";
+                        $res = mysqli_query($con, $query);
+                        $row = mysqli_fetch_assoc($res);
+                     ?>
+
+                     <table class="table table-bordered mt-3">
+                        <tr><th>Name</th><td><?php echo htmlspecialchars($row['name']); ?></td></tr>
+                        <tr><th>Email</th><td><?php echo htmlspecialchars($row['email']); ?></td></tr>
+                        <tr><th>Department</th><td><?php echo htmlspecialchars($row['department_name'] ?? 'Not Assigned'); ?></td></tr>
+                        <tr><th>Role</th><td><?php echo ($row['role'] == 1) ? 'Admin' : 'Employee'; ?></td></tr>
+                     </table>
                   <?php } ?>
                </div>
             </div>
