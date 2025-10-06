@@ -45,13 +45,13 @@ include('header.inc.php'); // include after login check
                   <a href="index.php" > Department Master</a>
                </li>
                <li class="menu-item-has-children dropdown">
-                  <a href="leave_type.php" > Add employee's</a>
+                  <a href="add_leave_type.php" > Add employee's</a>
                </li>
                <li class="menu-item-has-children dropdown">
                   <a href="employee.php" > Employee Master</a>
                </li>
                <li class="menu-item-has-children dropdown">
-                  <a href="add_leave_type.php" > Leave Type Master</a>
+                  <a href="leave_type.php"> Leave Type Master</a>
                </li>
                <?php } else { ?>
                <li class="menu-item-has-children dropdown">
