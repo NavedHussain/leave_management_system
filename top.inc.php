@@ -1,6 +1,9 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include __DIR__ . '/includes/config.php';
+
 
 // Ensure session keys exist
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;

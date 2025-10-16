@@ -26,7 +26,7 @@ if (isset($_POST['login'])) {
 
             // Redirect based on role
             if ($row['role'] == 1) {
-                header("Location: index.php");
+                header("Location: dashboard.php");
             } else {
                 header("Location: employee.php");
             }
