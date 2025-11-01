@@ -1,7 +1,7 @@
 <?php
 require('top.inc.php');
-
-// Handle admin actions
+include 'includes/admin_mail.php';
+/* // Handle admin actions
 if(isset($_GET['type']) && isset($_GET['id']) && $_SESSION['role'] == 1){
     $id = mysqli_real_escape_string($con,$_GET['id']);
     if($_GET['type'] == 'approve'){
@@ -10,6 +10,33 @@ if(isset($_GET['type']) && isset($_GET['id']) && $_SESSION['role'] == 1){
     if($_GET['type'] == 'reject'){
         mysqli_query($con,"UPDATE `leave` SET leave_status=2 WHERE id='$id'");
     }
+} */
+
+    // Ensure only admin users can access
+// if ($_SESSION['role'] != 1) {
+//     header('Location: employee.php');
+//     die();
+// }
+
+// Handle admin actions (approve / reject leave)
+if (isset($_GET['type']) && isset($_GET['id'])) {
+    $type = mysqli_real_escape_string($con, $_GET['type']);
+    $id = mysqli_real_escape_string($con, $_GET['id']);
+
+    // Approve Leave
+    if ($type == 'approve') {
+        mysqli_query($con, "UPDATE `leave` SET leave_status = 1 WHERE id = '$id'");
+        notifyEmployeeOnLeaveAction($id, 'approved'); // Send mail to employee
+    }
+
+    // Reject Leave
+    if ($type == 'reject') {
+        mysqli_query($con, "UPDATE `leave` SET leave_status = 2 WHERE id = '$id'");
+        notifyEmployeeOnLeaveAction($id, 'rejected'); // Send mail to employee
+    }
+
+    header('Location: leave.php');
+    die();
 }
 
 // Fetch leaves
@@ -107,3 +134,4 @@ $res = mysqli_query($con,$sql);
 </div>
 
 <?php require('footer.inc.php'); ?>
+

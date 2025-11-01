@@ -111,7 +111,8 @@ body {
             </div>
             <div class="dashboard-card cyan">
                 <h4>Approved Leaves</h4>
-                <h2><?php echo $approvedLeaves; ?></h2>
+                <h2><?php echo $approvedLeaves; ?></h2>     
+                       <!-- ketne Leave Approved hai uske number -->
             </div>
         </div>
 

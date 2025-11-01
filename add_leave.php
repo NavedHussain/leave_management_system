@@ -1,5 +1,6 @@
 <?php
 require('top.inc.php');
+include 'includes/send_mail.php';
 
 if(isset($_POST['submit'])){
     $leave_id = mysqli_real_escape_string($con,$_POST['leave_id']);
@@ -22,10 +23,55 @@ if(isset($_POST['submit'])){
         }
     }
 
-    mysqli_query($con,"INSERT INTO `leave`(leave_id, leave_from, leave_to, employee_id, leave_description, leave_status, document)
-                      VALUES('$leave_id','$leave_from','$leave_to','$employee_id','$leave_description',0,'$document')");
-    header('Location: leave.php');
-    die();
+    mysqli_query($con,"INSERT INTO `leave`(leave_id, leave_from, leave_to, employee_id, leave_description, leave_status)
+                      VALUES('$leave_id','$leave_from','$leave_to','$employee_id','$leave_description',0)");
+                    
+    $adminRes = mysqli_query($con,"Select email from employee Where role=1 Limit 1");
+    $adminRow = mysqli_fetch_assoc($adminRes);
+    $adminEmail = $adminRow['email'];
+
+    // Get employee name
+
+$empRes = mysqli_query($con, "SELECT name FROM employee
+
+WHERE id='$employee_id' LIMIT 1");
+
+$empRow = mysqli_fetch_assoc($empRes);
+
+$employeeName = $empRow ? $empRow['name']: 'Employee';
+
+// Get leave type
+
+$leaveTypeRes = mysqli_query($con, "SELECT leave_type FROM
+
+leave_type WHERE id='$leave_id' LIMIT 1");
+
+$leaveTypeRow = mysqli_fetch_assoc($leaveTypeRes);
+
+$leaveType = $leaveTypeRow ? $leaveTypeRow['leave_type']:'Leave';
+
+    if($adminEmail){
+
+        $subject = "New Leave Application Submitted";
+
+        $body = "<h3>New Leave Application</h3>
+
+        <p><strong>Employee:</strong> (SemployeeName}</p>
+
+        <p><strong>Leave Type:</strong> ($leaveType}</p>
+
+        <p><strong>From:</strong> ($leave_from)</p>
+
+        <p><strong>To:</strong> ($leave_to)</p>
+
+        <p><strong>Description:</strong>
+
+        (Sleave_description}</p>";
+
+        sendMail($adminEmail, $subject, $body);
+            header('Location: leave.php');
+            die();
+        }
 }
 ?>
 

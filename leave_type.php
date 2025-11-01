@@ -2,7 +2,7 @@
 require('top.inc.php');
 
 if($_SESSION['role']!=1){
-    header('location:add_employee.php?id='.$_SESSION['USER_ID']);
+    header('location:index.php');
     die();
 }
 

@@ -14,7 +14,6 @@ $userRole = $_SESSION['role'];
 // Database connection
 require('includes/config.php');
 ?>
-
 <div class="content pb-0">
    <div class="orders">
       <div class="row">

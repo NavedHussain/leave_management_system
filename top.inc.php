@@ -57,14 +57,15 @@ include('header.inc.php'); // include after login check
                   <a href="leave_type.php"> Leave Type Master</a>
                </li>
                <?php } else { ?>
-               <li class="menu-item-has-children dropdown">
-                  <a href="add_employee.php?id=<?php echo $user_id?>" > Profile</a>
-               </li>
-               <?php } ?>
-               <li class="menu-item-has-children dropdown">
-                  <a href="leave.php" > Leave</a>
-               </li>
-            </ul>
+                  <li class="menu-item-has-children dropdown">
+                     <a href="add_employee.php?id=<?php echo $user_id?>" > Profile</a>
+                  </li>
+                  <?php } ?>
+                  <li class="menu-item-has-children dropdown">
+                     <a href="leave.php" > Leave</a>
+                  </li>
+                  <a href="dashboard.php" class="back-btn">⬅ Back to Dashboard</a>     
+               </ul>
          </div>
       </nav>
    </aside>

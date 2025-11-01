@@ -100,7 +100,7 @@ $leaveResult = mysqli_query($con, $query);
                            <?php $i++; } ?>
                         </tbody>
                      </table>
-                      <a href="dashboard.php" class="back-btn">⬅ Back to Dashboard</a>
+                      <!-- <a href="dashboard.php" class="back-btn">⬅ Back to Dashboard</a> -->
                   </div>
                </div>
             </div>

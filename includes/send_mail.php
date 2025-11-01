@@ -1,6 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+error_reporting(E_ALL);
 
 require __DIR__ . '/../src/Exception.php';
 require __DIR__ . '/../src/PHPMailer.php';
@@ -28,6 +29,7 @@ function sendMail($to, $subject, $body) {
         return true;
     } catch (Exception $e) {
         echo "Mailer Error: " . $mail->ErrorInfo;
+        exit;
         return false;
     }
 }
