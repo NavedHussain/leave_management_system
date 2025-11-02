@@ -13,12 +13,12 @@ function sendMail($to, $subject, $body) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'navedhussain1803@gmail.com';
-        $mail->Password = 'xywp wgtx lwcu hjcl'; // App password
+        $mail->Username = 'Your email';
+        $mail->Password = 'Your Password'; // App password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('navedhussain1803@gmail.com', 'Leave System');
+        $mail->setFrom('Your email', 'Leave System');
         $mail->addAddress($to);
 
         $mail->isHTML(true);
@@ -49,8 +49,3 @@ function sendMail($to, $subject, $body) {
 
 
 
-
-
- <!-- 
-// $mail->Username   = 'navedhussain1803@gmail.com';
-// $mail->Password   = 'xywp wgtx lwcu hjcl';    -->

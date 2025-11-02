@@ -64,7 +64,12 @@ include('header.inc.php'); // include after login check
                   <li class="menu-item-has-children dropdown">
                      <a href="leave.php" > Leave</a>
                   </li>
-                  <a href="dashboard.php" class="back-btn">⬅ Back to Dashboard</a>     
+                 <?php if (isset($_SESSION['ROLE']) && $_SESSION['ROLE'] == 1) { ?>
+   <a href="/LMS_php/dashboard.php" class="back-btn">⬅ Back to Dashboard</a>
+<?php } else { ?>
+   <a href="employee.php" class="back-btn">⬅ Back to Dashboard</a>
+<?php } ?>
+
                </ul>
          </div>
       </nav>
